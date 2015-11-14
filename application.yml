@@ -1,0 +1,26 @@
+
+spring.jackson.date-format: "yyyy-MM-dd"
+
+spring:
+  profiles: development
+  main.show_banner: false     
+ 
+server:
+  port: 9001 
+     
+logging:
+  level:
+    com.potter.tools.backtest: DEBUG 
+
+---
+ 
+spring:
+  profiles: production
+  main.show_banner: true     
+
+server:
+  port: 8080 
+     
+logging:
+  level:
+    com.potter.tools.backtest: INFO   
