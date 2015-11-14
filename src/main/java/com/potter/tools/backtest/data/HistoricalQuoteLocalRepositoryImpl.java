@@ -14,7 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Repository
 public class HistoricalQuoteLocalRepositoryImpl implements HistoricalQuoteRepository {
     private final Logger LOGGER = LoggerFactory.getLogger(HistoricalQuoteLocalRepositoryImpl.class);
-    private static final String DATA_FOLDER = "C:\\Data\\java\\JavaSpringTest\\backtest\\localHistoricalQuoteData" + File.separatorChar;
+  //  private static final String DATA_FOLDER = "C:\\Data\\java\\JavaSpringTest\\backtest\\localHistoricalQuoteData" + File.separatorChar;
+    private static final String DATA_FOLDER = "C:\\data\\tmp\\localHistoricalQuoteData" + File.separatorChar;
     
     @Autowired
     HistoricalQuoteYahooFinanceRepositoryImpl historicalQuoteYahooFinanceRepositoryImpl;
