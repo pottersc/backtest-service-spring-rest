@@ -20,6 +20,7 @@ public class HistoricalQuote implements Serializable{
 
     public HistoricalQuote() {};
     
+    
     public HistoricalQuote(String tickerSymbol, String dateStr, double close) {
         this.tickerSymbol = tickerSymbol;
         this.date = LocalDate.parse(dateStr,DateTimeFormatter.ofPattern("yyyy-MM-dd"));
