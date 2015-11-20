@@ -20,6 +20,7 @@ public class TradeDay {
     private BigDecimal stockPrice;
     private TradeAction action;
     private BigDecimal numberSharesOwned = ZERO;
+    private BigDecimal numberSharesTraded = ZERO;
     private BigDecimal investableCash = ZERO;
     
     public TradeDay(LocalDate date, BigDecimal stockPrice) {
@@ -34,18 +35,22 @@ public class TradeDay {
             action = TradeAction.BUY;
             this.numberSharesOwned = (investableCash.subtract(transactionCost)).divide(stockPrice,mathContext);
             this.investableCash = ZERO;
+            this.numberSharesTraded = this.numberSharesOwned;
         }else if(sellSignal && isOwned(numberSharesOwned)) {
             action = TradeAction.SELL;
             this.investableCash = numberSharesOwned.multiply(stockPrice);
-            this.investableCash = investableCash.subtract(transactionCost);
+            this.investableCash = this.investableCash.subtract(transactionCost);
+            this.numberSharesTraded = numberSharesOwned;
             this.numberSharesOwned = ZERO;
         }else if(!isOwned(numberSharesOwned)) {
             action = TradeAction.NONE;
             this.numberSharesOwned = ZERO;
+            this.numberSharesTraded = ZERO;
             this.investableCash = investableCash;
         }else {
             action = TradeAction.HOLD;
             this.numberSharesOwned = numberSharesOwned;
+            this.numberSharesTraded = ZERO;
             this.investableCash = investableCash;
         }
     }    
@@ -74,7 +79,11 @@ public class TradeDay {
         return numberSharesOwned;
     }
 
-    public BigDecimal getInvestableCash() {
+    public BigDecimal getNumberSharesTraded() {
+		return numberSharesTraded;
+	}
+
+	public BigDecimal getInvestableCash() {
         return investableCash;
     }
 

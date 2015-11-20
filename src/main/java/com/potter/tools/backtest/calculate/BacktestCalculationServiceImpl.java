@@ -23,12 +23,17 @@ public class BacktestCalculationServiceImpl implements BacktestCalculationServic
         BacktestResults backtestResults = new BacktestResults(); 
         BigDecimal investableCash = backtestScenario.getStartingInvestment();
         BigDecimal numberSharesOwned = new BigDecimal(0);
+        boolean tradingEnabled = false;
         List<HistoricalQuote> historicalQuotes = historicalQuoteRepository.importHistoricalQuotes(backtestScenario.getTickerSymbol());
         for(HistoricalQuote quote:historicalQuotes) {
             if(quote.getDate().compareTo(backtestScenario.getStartDate())>=0 && quote.getDate().compareTo(backtestScenario.getEndDate())<=0) {
                 TradeDay tradeDay = new TradeDay(quote.getDate(), quote.getClose());
-                boolean buySignal = backtestScenario.getBuyTrigger().isTransactionTriggerActivated(quote, historicalQuotes);
-                boolean sellSignal = backtestScenario.getSellTrigger().isTransactionTriggerActivated(quote, historicalQuotes);                
+                boolean buySignal = backtestScenario.getBuyTrigger().isTransactionTriggerActivated(quote, historicalQuotes) && tradingEnabled;
+                boolean sellSignal = backtestScenario.getSellTrigger().isTransactionTriggerActivated(quote, historicalQuotes);       
+                // trading is not enabled until we are in a SELL state, so that the first BUY is triggered on the date that state switches from SELL to BUY
+                if(sellSignal && !tradingEnabled){
+                	tradingEnabled = true;
+                }
                 tradeDay.execute(numberSharesOwned, buySignal, sellSignal, investableCash, backtestScenario.getTransactionCost());
                 backtestResults.addTradeDay(tradeDay);
                 numberSharesOwned = tradeDay.getNumberSharesOwned();

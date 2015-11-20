@@ -7,12 +7,12 @@ import java.util.List;
 
 import com.potter.tools.backtest.data.HistoricalQuote;
 
-public class MovingAverageStrategy implements IndicatorStrategy{
-    private static final String STRATEGY_TAG = "SMA";
+public class ExponentialMovingAverageStrategy implements IndicatorStrategy{
+    private static final String STRATEGY_TAG = "EMA";
     private static final MathContext mathContext = new MathContext(5, RoundingMode.HALF_EVEN);
     private int numberOfDays = 0;
       
-    public MovingAverageStrategy(int numberOfDays) {
+    public ExponentialMovingAverageStrategy(int numberOfDays) {
         super();
         this.numberOfDays = numberOfDays;
     }
@@ -20,15 +20,31 @@ public class MovingAverageStrategy implements IndicatorStrategy{
     @Override
     public BigDecimal calculate(HistoricalQuote quoteInProcess, List<HistoricalQuote> historicalQuotes) {
         int indexOfQuoteInProcess = historicalQuotes.indexOf(quoteInProcess);
-        BigDecimal movingAverage = new BigDecimal("0");
+        BigDecimal k = (new BigDecimal(2)).divide(new BigDecimal(numberOfDays - 1),mathContext);
+        
+        int lastBar = historicalQuotes.size() - 1;
+        int firstBar = lastBar - 2 * numberOfDays + 1;
+        BigDecimal ema = historicalQuotes.get(firstBar).getClose();
+
+        for (int bar = firstBar; bar <= lastBar; bar++) {
+        	BigDecimal barClose = historicalQuotes.get(bar).getClose();
+        	BigDecimal emaTmp = (barClose.subtract(ema,mathContext)).multiply(k,mathContext);
+            ema = ema.add(emaTmp,mathContext);
+        }
+              
+        
+        return ema;
+/*        BigDecimal movingAverage = new BigDecimal("0");
         if(indexOfQuoteInProcess+1 > numberOfDays) {
             for(int historicalQuoteIndex = (indexOfQuoteInProcess-numberOfDays+1); historicalQuoteIndex<=indexOfQuoteInProcess; historicalQuoteIndex++) {
                 movingAverage = movingAverage.add(historicalQuotes.get(historicalQuoteIndex).getClose());
             }
             movingAverage = movingAverage.divide(new BigDecimal(numberOfDays),mathContext);
         }   
-        return movingAverage;
+        return movingAverage;*/
     }
+    
+
 
     @Override
     public String getName() {
@@ -39,29 +55,5 @@ public class MovingAverageStrategy implements IndicatorStrategy{
 	public boolean isDisplayIndicatorStrategy() {
 		return true;
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + numberOfDays;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MovingAverageStrategy other = (MovingAverageStrategy) obj;
-		if (numberOfDays != other.numberOfDays)
-			return false;
-		return true;
-	}
-	
-	
 
 }

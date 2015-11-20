@@ -17,5 +17,7 @@ public interface IndicatorStrategy {
     public BigDecimal calculate(HistoricalQuote quoteInProcess, List<HistoricalQuote> historicalQuotes);
     
     public String getName();
+    
+    public boolean isDisplayIndicatorStrategy();
 
 }

@@ -24,4 +24,36 @@ public class FixedValueStrategy implements IndicatorStrategy {
         return STRATEGY_TAG + "("+fixedValue+")";
     }
 
+	@Override
+	public boolean isDisplayIndicatorStrategy() {
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((fixedValue == null) ? 0 : fixedValue.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FixedValueStrategy other = (FixedValueStrategy) obj;
+		if (fixedValue == null) {
+			if (other.fixedValue != null)
+				return false;
+		} else if (!fixedValue.equals(other.fixedValue))
+			return false;
+		return true;
+	}
+
+	
+	
 }

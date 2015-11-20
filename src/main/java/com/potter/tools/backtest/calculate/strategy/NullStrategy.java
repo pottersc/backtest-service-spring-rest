@@ -18,4 +18,9 @@ public class NullStrategy implements IndicatorStrategy{
         return STRATEGY_TAG;
     }
 
+	@Override
+	public boolean isDisplayIndicatorStrategy() {
+		return false;
+	}
+
 }

@@ -13,8 +13,14 @@ public class BacktestResults {
     }
     
     public void addIndicators(List<Indicator> indicators) {
-        this.indicators.addAll(indicators);
+    	for(Indicator indicator:indicators){
+    		if(indicator.getIndicatorStrategy().isDisplayIndicatorStrategy()  && !this.indicators.contains(indicator)){
+    			 this.indicators.add(indicator);
+    		}
+    	}
     }
+    
+    
     
     public BigDecimal getEndingInvestment() {
         return getLastTradeDay().getInvestmentValue();

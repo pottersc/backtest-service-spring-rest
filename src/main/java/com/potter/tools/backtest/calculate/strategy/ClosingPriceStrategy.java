@@ -17,4 +17,11 @@ public class ClosingPriceStrategy implements IndicatorStrategy{
     public String getName() {
         return STRATEGY_TAG;
     }
+
+	@Override
+	public boolean isDisplayIndicatorStrategy() {
+		return false;
+	}
+    
+
 }
