@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.potter.tools.backtest.data.HistoricalQuoteLocalRepositoryImpl;
 import com.potter.tools.backtest.data.HistoricalQuoteRepository;
+import com.potter.tools.backtest.data.HistoricalQuoteYahooFinanceRepositoryImpl;
 
 @SpringBootApplication
 public class Application {
@@ -16,6 +17,8 @@ public class Application {
     
     @Bean
     public HistoricalQuoteRepository historicalQuoteRepository(){
-    	return new HistoricalQuoteLocalRepositoryImpl();
+    	//return new HistoricalQuoteLocalRepositoryImpl();
+    	return new HistoricalQuoteYahooFinanceRepositoryImpl();
     }
+    
 }

@@ -1,8 +1,8 @@
 package com.potter.tools.backtest.calculate;
 
-import java.util.Map;
-import java.util.TreeMap;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum RelationalOperator {
     GREATER_THAN(">"), LESS_THAN("<"), EQUALS("==");
     
@@ -15,6 +15,10 @@ public enum RelationalOperator {
     public String getSymbol() {
         return symbol;
     }
+    
+    public String getName() {
+    	return this.toString();
+    }
   
     public static RelationalOperator findByName(String name){
         for(RelationalOperator relationalOperator:RelationalOperator.values()){
@@ -25,20 +29,5 @@ public enum RelationalOperator {
         throw new RuntimeException("RelationalOperator.findByName("+name+") not found in Enum definition");
     }     
     
-/*    public static RelationalOperator findBySymbol(String symbol){
-        for(RelationalOperator relationalOperator:RelationalOperator.values()){
-            if(symbol!=null && symbol.equals(relationalOperator.symbol)){
-                return relationalOperator;
-            }
-        }
-        throw new RuntimeException("RelationalOperator.findBySymbol("+symbol+") not found in Enum definition");
-    }  */  
-        
-    public static Map<String,String> getRelationalOperatorsMap() {
-        Map<String, String> relationalOperators = new TreeMap<String, String>();
-        for(RelationalOperator relationalOperator:RelationalOperator.values()){
-            relationalOperators.put(relationalOperator.name(), relationalOperator.getSymbol());
-        }
-        return relationalOperators;
-    } 
+
 }

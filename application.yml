@@ -6,7 +6,7 @@ spring:
   main.show_banner: false     
  
 server:
-  port: 9001 
+  port: 8080 
      
 logging:
   level:

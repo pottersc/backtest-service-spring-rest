@@ -30,7 +30,7 @@ public class HistoricalQuoteYahooFinanceRepositoryImpl implements HistoricalQuot
     private List<HistoricalQuote> readYahooFinanceHistoricalQuotes(String ticker){
         LOGGER.debug("readYahooFinanceHistoricalQuotes("+ticker+")");
         Calendar from = Calendar.getInstance();
-        from.set(2009, 0, 1);
+        from.set(1999, 0, 1);
    //     from.add(Calendar.YEAR, -5);
       //  from.add(Calendar.MONTH, -1);
         Calendar to = Calendar.getInstance();

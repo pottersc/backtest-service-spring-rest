@@ -22,5 +22,10 @@ public class IndicatorStrategyFactory {
     public static IndicatorStrategy getIndicatorStrategy(OperandDTO operandDTO) {
     	return getIndicatorStrategy(operandDTO.getStrategyName(), operandDTO.getValue1(), operandDTO.getValue2());
     }    
+    
+  //  public String getStrategyChoicesJson(){
+    	//str = {name: "SMA", label: "Moving Average", value1: 0, value1Label: "Period", value2: 0, value2Label: ""}
+    
+ //   }
 
 }
