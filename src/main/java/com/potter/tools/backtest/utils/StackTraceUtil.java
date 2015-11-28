@@ -4,7 +4,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
-
+/**
+ * Convert the stacktrace for an error into a suitable string format for display
+ *
+ */
 public final class StackTraceUtil {
 
     public static String getStackTrace(Throwable aThrowable) {

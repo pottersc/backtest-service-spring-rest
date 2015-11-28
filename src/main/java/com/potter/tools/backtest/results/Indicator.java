@@ -7,20 +7,26 @@ import java.util.List;
 import com.potter.tools.backtest.calculate.strategy.IndicatorStrategy;
 import com.potter.tools.backtest.data.HistoricalQuote;
 
+/**
+ * An indicator is a representation of an indicator strategy (such as a 50 day moving average) and the 
+ * associated value of that strategy for each trading day of the analysis.
+ * This is used to chart the value of each indicator strategy on the display chart along side the
+ * stock price.
+ * @author Scott Potter
+ *
+ */
 public class Indicator {
     private String name;
     private List<IndicatorDay> indicatorDays;   
     private IndicatorStrategy indicatorStrategy;
     
-    public Indicator(IndicatorStrategy indicatorStrategy, List<HistoricalQuote> historicalQuotes) {
-        this.name = indicatorStrategy.getName();
-        this.indicatorStrategy = indicatorStrategy;
-        indicatorDays = new ArrayList<IndicatorDay>();
-        for(HistoricalQuote historicalQuote:historicalQuotes) {
-            indicatorDays.add(new IndicatorDay(historicalQuote.getDate(),indicatorStrategy.calculate(historicalQuote, historicalQuotes)));    
-        }
-    }
-    
+    /**
+     * Constructor for indicator class
+     * @param indicatorStrategy : strategy implementation such as 50 day simple moving average
+     * @param historicalQuotes : list of historical stock quotes
+     * @param startDate : analysis start date
+     * @param endDate : analysis end date
+     */
     public Indicator(IndicatorStrategy indicatorStrategy, List<HistoricalQuote> historicalQuotes, LocalDate startDate, LocalDate endDate) {
         this.name = indicatorStrategy.getName();
         this.indicatorStrategy = indicatorStrategy;
@@ -31,7 +37,6 @@ public class Indicator {
             }
         }
     }    
-    
     
     
     public String getName() {
@@ -70,7 +75,5 @@ public class Indicator {
 			return false;
 		return true;
 	}
-
-
     
 }

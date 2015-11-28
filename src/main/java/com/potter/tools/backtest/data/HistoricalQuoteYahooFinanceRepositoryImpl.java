@@ -15,32 +15,43 @@ import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
 
+/**
+ * Implementation of the HistoricalQuoteRepository interface using the Yahoo Finance API as 
+ * specified at http://financequotes-api.com/
+ * Collects historical stock data for the specified ticker symbol to build a List of 
+ * HistoricalQuote objects.
+ * @author Scott Potter
+ *
+ */
 @Repository
 public class HistoricalQuoteYahooFinanceRepositoryImpl implements HistoricalQuoteRepository{
     private static final Logger LOGGER = LoggerFactory.getLogger(HistoricalQuoteRepository.class);
 
+
     @Override
     public  List<com.potter.tools.backtest.data.HistoricalQuote> importHistoricalQuotes(String ticker) {
         LOGGER.debug("importAllData("+ticker+")");
+        assert(ticker!=null);
         List<com.potter.tools.backtest.data.HistoricalQuote>  historicalQuotes = convertYahooHistoricalQuoteToApplicationHistoricalQuoteFormat(readYahooFinanceHistoricalQuotes(ticker));
+        // sort historical quote data in ascending order by trade date
         historicalQuotes.sort(new HistoricalQuoteComparator());
         return historicalQuotes;      
     }
     
+    /**
+     * Utilize the Yahoo Finance API to import historical stock data 
+     * @param ticker : ticker symbol of stock
+     * @return : List of HistoricalQuote objects
+     */
     private List<HistoricalQuote> readYahooFinanceHistoricalQuotes(String ticker){
         LOGGER.debug("readYahooFinanceHistoricalQuotes("+ticker+")");
         Calendar from = Calendar.getInstance();
+        // specify the earliest date that data should be collected from
         from.set(1999, 0, 1);
-   //     from.add(Calendar.YEAR, -5);
-      //  from.add(Calendar.MONTH, -1);
         Calendar to = Calendar.getInstance();
-     //   to.set(2011, 0, 6);
-     //   to.add(Calendar.YEAR, -5);
-      //  to.add(Calendar.DATE, 5);
         List<HistoricalQuote> historicalQuotes = new ArrayList<HistoricalQuote>();
         try {
             Stock stock = YahooFinance.get(ticker, from, to, Interval.DAILY);
-            System.out.println("stock="+stock+", stats="+stock.getStats());
             historicalQuotes = stock.getHistory();
         } catch (IOException e) {
             throw new RuntimeException("HistoricalQuoteYahooFinanceRepositoryImpl.readYahooFinanceHistoricalQuotes("+ticker+") Failed.  Insure that ticker symbol is correct.");
@@ -51,6 +62,13 @@ public class HistoricalQuoteYahooFinanceRepositoryImpl implements HistoricalQuot
         return historicalQuotes;
     }
     
+    /**
+     * convert the Yahoo Finance HistoricalQuote objects to the backtest application HistoricalQuote object
+     * Yahoo Finance and the backtest application both use the same name for their HistoricalQuote objects,
+     * but the objects are different and so this method converts to the backtest implementations  
+     * @param yahooHistoricalQuotes
+     * @return
+     */
     private List<com.potter.tools.backtest.data.HistoricalQuote> convertYahooHistoricalQuoteToApplicationHistoricalQuoteFormat(List<HistoricalQuote> yahooHistoricalQuotes){
         LOGGER.debug("convertYahooHistoricalQuoteToApplicationHistoricalQuoteFormat()");
         List<com.potter.tools.backtest.data.HistoricalQuote> applicationHistoricalQuotes = new ArrayList<com.potter.tools.backtest.data.HistoricalQuote>();

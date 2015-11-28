@@ -1,5 +1,12 @@
 package com.potter.tools.backtest.calculate;
 
+/**
+ * Operand Data Transfer Object is used to assist in the transformation of 
+ * client passed in JSON data into backtestScenario object.
+ * See BacktestScenarioDTO for details as to why this is required
+ * @author Scott Potter
+ *
+ */
 public class OperandDTO {
 	private String strategyName;
 	private int value1;

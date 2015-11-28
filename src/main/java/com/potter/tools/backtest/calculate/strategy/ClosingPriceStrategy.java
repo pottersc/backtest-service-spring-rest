@@ -5,6 +5,12 @@ import java.util.List;
 
 import com.potter.tools.backtest.data.HistoricalQuote;
 
+/**
+ * Implementation of a closing price strategy IndicatorStrategy
+ * Simple strategy that is just the stock's closing price for the specified quote date
+ * @author Scott Potter
+ *
+ */
 public class ClosingPriceStrategy implements IndicatorStrategy{
     private static final String STRATEGY_TAG = "CLOSE";
     

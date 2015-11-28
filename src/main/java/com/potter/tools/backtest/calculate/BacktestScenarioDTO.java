@@ -6,6 +6,17 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.potter.tools.backtest.data.JsonDateDeserializer;
 
+/**
+ * Backtest scenario data transfer object (follows the data transfer object pattern)
+ * The data transfer object is necessary because the JSON data representing the backtest
+ * scenario that is sent from the client cannot be automatically be converted by Jackson
+ * into a BacktestScenario object because a factory design pattern is used to create
+ * the individual IndicatorStrategy objects.
+ * This may not be the most graceful way to solve this issue because additional classes
+ * are required.  This code will be refactored out of a better approach is identified
+ * @author Scott Potter
+ *
+ */
 public class BacktestScenarioDTO {
     private String tickerSymbol;
     @JsonDeserialize(using = JsonDateDeserializer.class)
@@ -61,11 +72,5 @@ public class BacktestScenarioDTO {
 	public void setSellTrigger(TransactionTriggerDTO sellTrigger) {
 		this.sellTrigger = sellTrigger;
 	}
-
-
-    
-
-
-    
     
 }

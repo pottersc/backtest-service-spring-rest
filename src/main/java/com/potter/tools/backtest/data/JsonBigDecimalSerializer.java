@@ -9,6 +9,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
+/**
+ * Serialize a BigDecimal to have 2 digits after the decimal point for JSON object creation
+ * @author Scott Potter
+ *
+ */
 public class JsonBigDecimalSerializer extends JsonSerializer<BigDecimal> {    
 
     @Override

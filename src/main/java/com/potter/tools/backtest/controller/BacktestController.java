@@ -1,8 +1,5 @@
 package com.potter.tools.backtest.controller;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,13 @@ import com.potter.tools.backtest.calculate.RelationalOperator;
 import com.potter.tools.backtest.results.BacktestResults;
 import com.potter.tools.backtest.utils.StackTraceUtil;
 
-
+/**
+ * 
+ * REST controller for the backtest application
+ * 
+ * @author Scott Potter
+ * 
+ */
 @RestController
 @RequestMapping("/backtest")
 public class BacktestController {
@@ -28,41 +31,33 @@ public class BacktestController {
 	@Autowired
 	private BacktestCalculationService backtestCalculationService;
 
+	/**
+	 * 
+	 * @return JSON formatted list of relational operators supported by the backtest tool
+	 */
 	@RequestMapping("/relationalOperators")
 	@ResponseBody
 	public final RelationalOperator[] prepareOperators() {
 		return RelationalOperator.values();
 	}
 	
-	@RequestMapping("/indicatorStrategies")
-	@ResponseBody
-	public final Map<String, String> prepareIndicatorStrategies() {
-		Map<String, String> indicatorStrategies = new TreeMap<String, String>();
-		indicatorStrategies.put("SMA", "Simple Moving Average");
-		indicatorStrategies.put("CLOSE", "Closing Price");
-		indicatorStrategies.put("FIX", "Fixed Price");
-		return indicatorStrategies;
-	}
-
+	/**
+	 * Execute a backtest analysis for the passed in scenario
+	 * @param backtestScenarioDTO : scenario to be executed. This is a Data Transfer Object
+	 * @return BacktestResult object in JSON format
+	 */
 	@RequestMapping(value = "/runAnalysis", method = RequestMethod.POST)
 	@ResponseBody
 	public BacktestResults runAnalysis(@RequestBody BacktestScenarioDTO backtestScenarioDTO) {
-		LOGGER.info("runAnalysis() Called");
-		LOGGER.info("tickerSymbol=" + backtestScenarioDTO.getTickerSymbol());
-		LOGGER.info("startDateStr=" + backtestScenarioDTO.getStartDate().toString());
-		LOGGER.info("buyStrategyOperandsStrategyName=" + backtestScenarioDTO.getBuyTrigger().getOperand1().getStrategyName());
+		LOGGER.debug("runAnalysis() Called with ticker symbol of " + backtestScenarioDTO.getTickerSymbol());
+		// Convert the backtest scenario data transfer object into a true BacktestScenario object
 		BacktestScenario backtestScenario = new BacktestScenario(backtestScenarioDTO);
-
-
 		BacktestResults backtestResults = null;
 		try {
 			backtestResults = backtestCalculationService.runAnalysis(backtestScenario);
-			LOGGER.info("ending investment="+backtestResults.getEndingInvestment());
-			LOGGER.info("# days="+backtestResults.getTradeDays().size());
 		} catch (Exception e) {
 			LOGGER.error(StackTraceUtil.getCustomStackTrace(e));
 		}
-
 		return backtestResults;
 	}
 

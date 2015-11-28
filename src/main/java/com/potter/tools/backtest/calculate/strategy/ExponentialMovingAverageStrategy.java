@@ -7,6 +7,12 @@ import java.util.List;
 
 import com.potter.tools.backtest.data.HistoricalQuote;
 
+
+/**
+ * THIS CLASS IS STILL IN DEVELOPMENT AND IS NOT YET WORKING
+ * @author Scott Potter
+ *
+ */
 public class ExponentialMovingAverageStrategy implements IndicatorStrategy{
     private static final String STRATEGY_TAG = "EMA";
     private static final MathContext mathContext = new MathContext(5, RoundingMode.HALF_EVEN);

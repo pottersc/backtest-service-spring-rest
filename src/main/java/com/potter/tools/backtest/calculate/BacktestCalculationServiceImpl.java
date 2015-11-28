@@ -1,6 +1,7 @@
 package com.potter.tools.backtest.calculate;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,13 @@ import com.potter.tools.backtest.data.HistoricalQuoteRepository;
 import com.potter.tools.backtest.results.BacktestResults;
 import com.potter.tools.backtest.results.TradeDay;
 
+/**
+ * Implementation of BacktestCalculationService 
+ * This is the heart of the backtest analysis and is responsible for 
+ * synchronizing and executing the backtest analysis algorithm
+ * @author Scott Potter
+ *
+ */
 @Service("backtestCalculationService")
 public class BacktestCalculationServiceImpl implements BacktestCalculationService{
     @Autowired
@@ -24,9 +32,11 @@ public class BacktestCalculationServiceImpl implements BacktestCalculationServic
         BigDecimal investableCash = backtestScenario.getStartingInvestment();
         BigDecimal numberSharesOwned = new BigDecimal(0);
         boolean tradingEnabled = false;
+        // collect historical quotes from a historical quote repository such as yahoo finance API
         List<HistoricalQuote> historicalQuotes = historicalQuoteRepository.importHistoricalQuotes(backtestScenario.getTickerSymbol());
+        // process each day of the historical quotes
         for(HistoricalQuote quote:historicalQuotes) {
-            if(quote.getDate().compareTo(backtestScenario.getStartDate())>=0 && quote.getDate().compareTo(backtestScenario.getEndDate())<=0) {
+            if(isDateInRange(quote.getDate(),backtestScenario.getStartDate(),backtestScenario.getEndDate())) {
                 TradeDay tradeDay = new TradeDay(quote.getDate(), quote.getClose());
                 boolean buySignal = backtestScenario.getBuyTrigger().isTransactionTriggerActivated(quote, historicalQuotes) && tradingEnabled;
                 boolean sellSignal = backtestScenario.getSellTrigger().isTransactionTriggerActivated(quote, historicalQuotes);       
@@ -43,6 +53,17 @@ public class BacktestCalculationServiceImpl implements BacktestCalculationServic
         backtestResults.addIndicators(backtestScenario.getBuyTrigger().getIndicators(historicalQuotes, backtestScenario.getStartDate(), backtestScenario.getEndDate()));
         backtestResults.addIndicators(backtestScenario.getSellTrigger().getIndicators(historicalQuotes, backtestScenario.getStartDate(), backtestScenario.getEndDate()));
         return backtestResults;
+    }
+    
+    /**
+     * Helper method that determines if the specified date is between startDate and endDate
+     * @param date : date to be tested
+     * @param startDate : start date
+     * @param endDate : end date
+     * @return : true if startDate > date < endDate; false otherwise
+     */
+    private boolean isDateInRange(LocalDate date, LocalDate startDate, LocalDate endDate){
+    	return (date.compareTo(startDate)>=0 && date.compareTo(endDate)<=0);
     }
 
 }

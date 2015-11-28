@@ -7,11 +7,23 @@ import java.util.List;
 
 import com.potter.tools.backtest.data.HistoricalQuote;
 
+/**
+ * Implementation of a simple moving average strategy IndicatorStrategy
+ * Simple Moving Average strategy is just the average of the past N
+ * days closing stock price.  It is a very popular trading strategy for smoothing
+ * out stock price changes.
+ * @author Scott Potter
+ *
+ */
 public class MovingAverageStrategy implements IndicatorStrategy{
     private static final String STRATEGY_TAG = "SMA";
     private static final MathContext mathContext = new MathContext(5, RoundingMode.HALF_EVEN);
     private int numberOfDays = 0;
       
+    /**
+     * Constructor for MovingAverageStrategy
+     * @param numberOfDays : number of historical days to calculate average from
+     */
     public MovingAverageStrategy(int numberOfDays) {
         super();
         this.numberOfDays = numberOfDays;
@@ -60,8 +72,6 @@ public class MovingAverageStrategy implements IndicatorStrategy{
 		if (numberOfDays != other.numberOfDays)
 			return false;
 		return true;
-	}
-	
-	
+	}	
 
 }

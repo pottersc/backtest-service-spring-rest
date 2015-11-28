@@ -10,9 +10,21 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
+/**
+ * 
+ * Cross-Origin Resource Sharing (CORS) filter that allows the backtest web service to be called from a
+ * web site that originated from a different server. 
+ * 
+ * @author Scott Potter
+ * 
+ */
 @Component
 public class BacktestCORSFilter implements Filter {
 
+	/**
+	 * Required implementation of the Filter interface.
+	 * Specifies the access points that are allowed to this application
+	 */
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		HttpServletResponse response = (HttpServletResponse) res;
 		response.setHeader("Access-Control-Allow-Origin", "*");

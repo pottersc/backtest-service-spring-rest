@@ -2,6 +2,11 @@ package com.potter.tools.backtest.data;
 
 import java.util.Comparator;
 
+/**
+ * Comparator for HistoricalQuote objects that sorts by stock trade date
+ * @author Scott Potter
+ *
+ */
 public class HistoricalQuoteComparator implements Comparator<HistoricalQuote> {
 
     @Override

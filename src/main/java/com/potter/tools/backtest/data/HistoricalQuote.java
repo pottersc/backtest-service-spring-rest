@@ -8,9 +8,15 @@ import java.time.format.DateTimeFormatter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+/**
+ * Object that holds all the information associated with a historical stock quote
+ * 
+ * @author Scott Potter
+ */
 public class HistoricalQuote implements Serializable{ 
     private static final long serialVersionUID = -2972167241680417277L;
-    private String tickerSymbol;     
+    private String tickerSymbol;  
+    // serialize and deserialize date string format 'yyyy-MM-dd' to LocalDate 
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @JsonSerialize(using = JsonDateSerializer.class)
     private LocalDate date; 
@@ -20,13 +26,25 @@ public class HistoricalQuote implements Serializable{
 
     public HistoricalQuote() {};
     
-    
+    /**
+     * Constructor for HistoricalQuote
+     * @param tickerSymbol : stock ticker symbol 
+     * @param dateStr : date in format 'yyyy-MM-dd'
+     * @param close : closing price of stock
+     */
     public HistoricalQuote(String tickerSymbol, String dateStr, double close) {
         this.tickerSymbol = tickerSymbol;
         this.date = LocalDate.parse(dateStr,DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         this.close = new BigDecimal(close);
     }
     
+    /**
+     * Constructor for HistoricalQuote
+     * @param tickerSymbol : stock ticker symbol 
+     * @param date : date of stock trade
+     * @param close : closing price of stock
+     * @param volume : volume of stock traded on the specified date
+     */
     public HistoricalQuote(String tickerSymbol, LocalDate date, BigDecimal close, long volume) {
         this.tickerSymbol = tickerSymbol;
         this.date = date;

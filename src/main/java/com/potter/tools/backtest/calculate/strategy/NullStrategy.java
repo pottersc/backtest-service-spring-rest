@@ -5,6 +5,12 @@ import java.util.List;
 
 import com.potter.tools.backtest.data.HistoricalQuote;
 
+/**
+ * Default strategy to be defined if no other strategies are found
+ * This is an implementation of the 'Null Object Pattern'
+ * @author Scott Potter
+ *
+ */
 public class NullStrategy implements IndicatorStrategy{
     private static final String STRATEGY_TAG = "NULL_STRATEGY";
     

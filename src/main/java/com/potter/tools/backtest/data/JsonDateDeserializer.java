@@ -11,6 +11,11 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.node.TextNode;
 
+/**
+ * Deserialize JSON data from a date string with pattern yyyy-MM-dd to a LocalDate object
+ * @author Scott Potter
+ *
+ */
 public class JsonDateDeserializer extends JsonDeserializer<LocalDate> {
     
     @Override
